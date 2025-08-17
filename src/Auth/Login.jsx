@@ -13,7 +13,7 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:8080/api/v1/auth/login", { email, password });
       const token = response.data.token;
-      localStorage.setItem("token", token);
+      sessionStorage.setItem("token", token);
 
       const userResponse = await axios.get("http://localhost:8080/api/v1/auth/user", {
         headers: { Authorization: `Bearer ${token}` },
@@ -21,6 +21,7 @@ const Login = () => {
 
       const user = userResponse.data;
       if (user.roles.includes("ROLE_SHOPKEEPER")) {
+        sessionStorage.setItem('shopkeeperId', response.data.shopkeeperId);
         navigate("/shopkeeper-dashboard");
       } else if (user.roles.includes("ROLE_CUSTOMER")) {
         navigate("/customer-dashboard");

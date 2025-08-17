@@ -2,9 +2,9 @@ import { API_BASE } from '../utils/constants';
 
 const IMAGE_API = `${API_BASE}/image`;
 
-export const uploadImages = async (productId, files, token) => {
+export const uploadImages = async (productId, file, token) => {
   const formData = new FormData();
-  files.forEach(file => formData.append('file', file));
+  file.forEach(file => formData.append('file', file));
 
   const response = await fetch(`${IMAGE_API}/upload?productId=${productId}`, {
     method: 'POST',

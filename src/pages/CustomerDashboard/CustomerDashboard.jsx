@@ -1,16 +1,19 @@
 // src/pages/CustomerDashboard.jsx
 import React, { useEffect, useState } from "react";
 import { useCart } from "../../contexts/CartContext"; // ensure correct path
+import { placeOrder } from "../../api/orderService"; 
+import { Link } from "react-router-dom";
+import "./CustomerDashboard.css";
+import "./CustomerDashboardButton.css";
 
-// Import React Router elements to add navigation to Cart page
-import { Link } from "react-router-dom"; 
+
 
 const API_BASE = "http://localhost:8080/api/v1";
 const PRODUCTS_API = `${API_BASE}/products`;
 const IMAGE_API = `${API_BASE}/image`;
+const ORDERS_API = `${API_BASE}/orders`;
 
 const CustomerDashboard = () => {
-  // ... your existing state & hooks
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -19,8 +22,11 @@ const CustomerDashboard = () => {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [orderMessage, setOrderMessage] = useState("");
+  const [loadingOrder, setLoadingOrder] = useState(false);
 
-  const { addItem } = useCart(); // cart actions
+  const { addItem, cart, clearCart } = useCart(); // get cart and clearCart for order logic
+  const userId = 1; // TODO: replace with real logged-in user id or context
 
   useEffect(() => {
     fetchProducts();
@@ -28,7 +34,7 @@ const CustomerDashboard = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${PRODUCTS_API}/all`);
+      const response = await fetch(`${PRODUCTS_API}/customer/all`);
       const data = await response.json();
 
       if (!response.ok) {
@@ -97,21 +103,49 @@ const CustomerDashboard = () => {
     setSelectedProduct(null);
   };
 
+
   return (
     <div className="customer-dashboard p-4">
       <h2 className="text-2xl font-bold mb-4">Customer Dashboard</h2>
 
-      {/* Add a link/button to navigate to Cart page */}
-      {/* =========== CART PAGE LINK ========== */}
-      <div className="mb-4">
+      {/* Buttons for navigation and actions */}
+      <div className="mb-4 flex gap-2">
         <Link
-          to="/cart" // This assumes you have a Route for CartPage at /cart
+          to="/cart"
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           Go to Cart
         </Link>
+
+          <button
+          onClick={() =>
+            placeOrder(userId, cart, clearCart, setOrderMessage, setLoadingOrder)
+          }
+          disabled={loadingOrder}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          {loadingOrder ? "Placing Order..." : "Place Order"}
+        </button>
+
+        <Link
+          to="/orders"
+          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+        >
+          View My Orders
+        </Link>
       </div>
-      {/* ===================================== */}
+
+      {orderMessage && (
+        <div
+          className={`mb-4 ${
+            orderMessage.includes("successfully")
+              ? "text-green-600"
+              : "text-red-600"
+          }`}
+        >
+          {orderMessage}
+        </div>
+      )}
 
       {error && <div className="error-message text-red-600 mb-4">{error}</div>}
 
@@ -159,7 +193,7 @@ const CustomerDashboard = () => {
               className="product-card border rounded p-4 flex flex-col"
             >
               {product.images && product.images.length > 0 ? (
-                <div className="product-image-container mb-4">
+                <div className="product-image-container mb-4 relative">
                   <img
                     src={product.images[0].viewUrl}
                     alt={product.name}
@@ -179,9 +213,13 @@ const CustomerDashboard = () => {
               )}
 
               <div className="product-info flex-grow">
-                <h3 className="text-lg font-semibold">{product.name || "Unnamed Product"}</h3>
+                <h3 className="text-lg font-semibold">
+                  {product.name || "Unnamed Product"}
+                </h3>
                 <p className="brand text-gray-600">{product.brand || "No Brand"}</p>
-                <p className="price font-bold mt-1">${product.price?.toFixed(2) || "0.00"}</p>
+                <p className="price font-bold mt-1">
+                  ${product.price?.toFixed(2) || "0.00"}
+                </p>
                 <p className="description mt-2 text-sm text-gray-700">
                   {product.description?.length > 100
                     ? `${product.description.substring(0, 100)}...`
@@ -207,7 +245,9 @@ const CustomerDashboard = () => {
             </div>
           ))
         ) : (
-          <div className="no-products-message">No products found matching your criteria.</div>
+          <div className="no-products-message">
+            No products found matching your criteria.
+          </div>
         )}
       </div>
 
@@ -224,12 +264,17 @@ const CustomerDashboard = () => {
 
             <h2 className="text-2xl font-bold mb-2">{selectedProduct.name}</h2>
             <p className="brand text-gray-700 mb-1">{selectedProduct.brand}</p>
-            <p className="price font-semibold mb-4">${selectedProduct.price?.toFixed(2)}</p>
+            <p className="price font-semibold mb-4">
+              ${selectedProduct.price?.toFixed(2)}
+            </p>
 
             <div className="product-images-gallery flex gap-4 mb-4 overflow-x-auto">
               {selectedProduct.images && selectedProduct.images.length > 0 ? (
                 selectedProduct.images.map((image, index) => (
-                  <div key={index} className="gallery-image-container flex-shrink-0 w-32 h-32 border rounded overflow-hidden cursor-pointer">
+                  <div
+                    key={index}
+                    className="gallery-image-container flex-shrink-0 w-32 h-32 border rounded overflow-hidden cursor-pointer"
+                  >
                     <img
                       src={image.viewUrl}
                       alt={`${selectedProduct.name} ${index + 1}`}

@@ -1,7 +1,10 @@
+// src/components/products/ProductTable.jsx
 import React from 'react';
+import './ProductTable.css';
 
 const ProductTable = ({ products, onEdit, onDelete, onImageDelete }) => {
   console.log("Products in ProductTable:", products);
+
   return (
     <div className="product-table">
       <table>
@@ -11,6 +14,7 @@ const ProductTable = ({ products, onEdit, onDelete, onImageDelete }) => {
             <th>Brand</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Images</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -20,26 +24,42 @@ const ProductTable = ({ products, onEdit, onDelete, onImageDelete }) => {
               <td>{product.name}</td>
               <td>{product.brand}</td>
               <td>${product.price}</td>
-              <td>{product.stock}</td>
+              <td>{product.inventory}</td>
+              
+              {/* IMAGES COLUMN */}
               <td>
-                  <button onClick={() => onEdit(product)}>Edit</button>
-                  <button onClick={() => onDelete(product.id)}>Delete</button>
-                  <ul>
-                  {product.images?.map((image, index) => {
-                    // const key = `${product.id || 'no-id'}-${image.id || image.url || index}`;
-                    // console.log("Image Key:", key);
-                    return (
-                      <li key = {index}>
-                        <img src={image.url} alt={product.name} width="50" />
-                        <button onClick={() => onImageDelete(product.id, image.id)}>Delete Image</button>
-                      </li>
-                    );
-                  })}
+                <div className="product-image-container">
+                  {product.images && product.images.length > 0 ? (
+                    <div className="product-image-grid">
+                      {product.images.map((image, index) => (
+                        <div key={index} className="product-thumbnail-wrapper">
+                          <img
+                            src={image.downloadUrl}
+                            alt={product.name}
+                            className="product-thumbnail"
+                          />
+                          <button
+                            className="delete-image-btn"
+                            onClick={() => onImageDelete(product.id, image.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="no-image-placeholder">No Image</div>
+                  )}
+                </div>
+              </td>
 
-                  </ul>
-                </td>
-
-
+              {/* ACTIONS COLUMN */}
+              <td>
+                <div className="action-buttons">
+                  <button className="edit-btn" onClick={() => onEdit(product)}>Edit</button>
+                  <button className="delete-btn" onClick={() => onDelete(product.id)}>Delete</button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

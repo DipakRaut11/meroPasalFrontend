@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ImageUploader from '../../components/images/ImageUploader';
-import { ErrorMessage } from '../common/ErrorMessage';
-import LoadingSpinner from '../common/LoadingSpinner';
+import './ProductForm.css';
 
 const ProductForm = ({
   initialData = {},
@@ -15,10 +14,10 @@ const ProductForm = ({
     price: initialData.price || '',
     inventory: initialData.inventory || '',
     description: initialData.description || '',
-    category: initialData.category || ''
+    category: initialData.category?.name || initialData.category || ''
   });
 
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState(initialData.images || []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +31,6 @@ const ProductForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="product-form">
-      {/* Product Name */}
       <div className="form-group">
         <label>Product Name</label>
         <input
@@ -44,7 +42,6 @@ const ProductForm = ({
         />
       </div>
 
-      {/* Brand */}
       <div className="form-group">
         <label>Brand</label>
         <input
@@ -56,7 +53,6 @@ const ProductForm = ({
         />
       </div>
 
-      {/* Price */}
       <div className="form-group">
         <label>Price</label>
         <input
@@ -68,7 +64,6 @@ const ProductForm = ({
         />
       </div>
 
-      {/* Inventory */}
       <div className="form-group">
         <label>Inventory</label>
         <input
@@ -80,7 +75,6 @@ const ProductForm = ({
         />
       </div>
 
-      {/* Description */}
       <div className="form-group">
         <label>Description</label>
         <textarea
@@ -91,7 +85,6 @@ const ProductForm = ({
         />
       </div>
 
-      {/* Category Input */}
       <div className="form-group">
         <label>Category</label>
         <input
@@ -103,7 +96,6 @@ const ProductForm = ({
         />
       </div>
 
-      {/* Image Uploader */}
       <ImageUploader
         onImagesChange={setSelectedImages}
         initialImages={initialData.images || []}
