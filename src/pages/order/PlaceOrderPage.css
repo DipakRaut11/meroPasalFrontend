@@ -1,0 +1,135 @@
+.place-order-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  justify-content: center;
+}
+
+.qr-panel {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-panel h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.qr-image {
+  width: 250px;
+  height: 250px;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Enlarged image modal style */
+.qr-image.large {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  max-width: 90%;
+  max-height: 90%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Overlay behind enlarged image */
+.qr-image.large::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: -1;
+}
+
+.form-panel {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-panel h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-panel input[type="text"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.form-panel input[type="text"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+}
+
+.form-panel button {
+  background-color: #16a34a;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.form-panel button:hover {
+  background-color: #15803d;
+  transform: translateY(-2px);
+}
+
+.error-message {
+  color: #dc2626;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.loading-message {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 1.2rem;
+  color: #374151;
+}
+
+@media (max-width: 768px) {
+  .place-order-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .qr-panel, .form-panel {
+    max-width: 100%;
+  }
+}

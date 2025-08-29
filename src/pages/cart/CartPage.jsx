@@ -1,21 +1,18 @@
-// src/pages/CartPage.jsx
+// src/pages/cart/CartPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { placeOrder } from "../../api/orderService"; 
 import './CartPage.css';
 
 const API_PREFIX = '/api/v1/cartItem';
 
 const CartPage = () => {
-  const { cart, setCart } = useCart(); // we need setCart to update state
+  const { cart, setCart } = useCart();
   const [loading, setLoading] = useState(false);
-  const [orderMessage, setOrderMessage] = useState('');
   const navigate = useNavigate();
 
   const userId = 1; // replace with actual logged-in user id
 
-  // Helper to fetch cart from backend
   const fetchCart = async () => {
     try {
       const token = sessionStorage.getItem('token');
@@ -38,7 +35,6 @@ const CartPage = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        // Update local cart state
         setCart(prev => ({
           ...prev,
           items: prev.items.map(item =>
@@ -80,7 +76,6 @@ const CartPage = () => {
     0
   );
 
-
   if (!cart) return <p>Loading cart...</p>;
 
   if (!cart.items || cart.items.length === 0) {
@@ -108,23 +103,20 @@ const CartPage = () => {
           </li>
         ))}
       </ul>
+
       <h3 className="mt-4 font-semibold">Total: ₹{totalPrice.toFixed(2)}</h3>
 
       <div className="mt-4 flex gap-2">
         <button onClick={clearCart} className="px-4 py-2 bg-gray-400 rounded">Clear Cart</button>
+        {/* Navigate to PlaceOrderPage for filling delivery details */}
         <button
-          onClick={() =>
-            placeOrder(userId, cart, clearCart, setOrderMessage, setLoading)
-          }
-          disabled={loading}
+          onClick={() => navigate('/place-order')}
           className="px-4 py-2 bg-green-600 text-white rounded"
         >
-          {loading ? 'Placing Order...' : 'Place Order'}
+          Place Order
         </button>
         <button onClick={() => navigate('/orders')} className="px-4 py-2 bg-blue-600 text-white rounded">View My Orders</button>
       </div>
-
-      {orderMessage && <p className="mt-2">{orderMessage}</p>}
     </div>
   );
 };

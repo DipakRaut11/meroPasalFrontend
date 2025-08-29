@@ -31,7 +31,11 @@ const ProductTable = ({ products, onEdit, onDelete, onImageDelete }) => {
                 <div className="product-image-container">
                   {product.images && product.images.length > 0 ? (
                     <div className="product-image-grid">
-                      {product.images.map((image, index) => (
+                      {product.images.map((image, index) => {
+                        console.log("Image object for product:", product.name, image); // ✅ See all fields
+                        console.log("Image ID:", image.id); // ✅ Check if `id` exists
+
+                        return(
                         <div key={index} className="product-thumbnail-wrapper">
                           <img
                             src={image.downloadUrl}
@@ -40,12 +44,12 @@ const ProductTable = ({ products, onEdit, onDelete, onImageDelete }) => {
                           />
                           <button
                             className="delete-image-btn"
-                            onClick={() => onImageDelete(product.id, image.id)}
+                            onClick={() => onImageDelete(product.id, image.imageId)}
                           >
                             Delete
                           </button>
                         </div>
-                      ))}
+                      )})}
                     </div>
                   ) : (
                     <div className="no-image-placeholder">No Image</div>

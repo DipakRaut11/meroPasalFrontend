@@ -9,8 +9,16 @@ import ProductForm from '../../components/products/ProductForm';
 import { ErrorMessage } from '../../components/common/ErrorMessage';
 import { SearchBar } from '../../components/common/SearchBar';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-
 import './ShopkeeperDashboard.css';
+
+// Define order statuses as constants to avoid hardcoding
+const ORDER_STATUSES = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+};
 
 const ShopkeeperDashboard = () => {
   const token = sessionStorage.getItem('token');
@@ -37,29 +45,20 @@ const ShopkeeperDashboard = () => {
   }, [activeTab]);
 
   const fetchOrders = async () => {
-  try {
-    console.log('Fetching orders... token:', token);
+    try {
+      setOrdersLoading(true);
+      setOrdersError('');
 
-    setOrdersLoading(true);
-    setOrdersError('');
-
-    const res = await getShopOrders(token);
-    console.log('Orders API raw response:', res);
-
-    if (!Array.isArray(res)) {
-      console.warn('⚠️ Response is not an array:', res);
+      const res = await getShopOrders(token);
+      setOrders(Array.isArray(res) ? res : []);
+    } catch (err) {
+      console.error('Fetch orders error:', err);
+      setOrdersError('Failed to fetch orders');
+      setOrders([]);
+    } finally {
+      setOrdersLoading(false);
     }
-
-    setOrders(Array.isArray(res) ? res : []);
-  } catch (err) {
-    console.error('Fetch orders error:', err);
-    setOrdersError('Failed to fetch orders');
-    setOrders([]);
-  } finally {
-    setOrdersLoading(false);
-  }
-};
-
+  };
 
   const handleStatusChange = async (orderId, status) => {
     try {
@@ -74,7 +73,7 @@ const ShopkeeperDashboard = () => {
   /** PRODUCT HANDLERS **/
   const handleAddProduct = async (productData, images) => {
     try {
-      if (!shopkeeperId) throw new Error('Shopkeeper not logged in');
+  
       if (!productData.name || !productData.brand || !productData.price || !productData.inventory || !productData.category) {
         throw new Error('Please fill in all required fields');
       }
@@ -126,19 +125,16 @@ const ShopkeeperDashboard = () => {
   };
 
   const handleDeleteProduct = async (id) => {
-  if (!window.confirm('Are you sure you want to delete this product?')) return;
-  try {
-    await deleteProduct(id, token);
-    setProducts(prev => prev.filter(p => p.id !== id));
-  } catch (err) {
-    console.error('Delete product error:', err.message);
-
-    // Show the backend message if available
-    const backendMessage = err.response?.data?.message || err.message;
-    alert(backendMessage);
-  }
-};
-
+    if (!window.confirm('Are you sure you want to delete this product?')) return;
+    try {
+      await deleteProduct(id, token);
+      setProducts(prev => prev.filter(p => p.id !== id));
+    } catch (err) {
+      console.error('Delete product error:', err.message);
+      const backendMessage = err.response?.data?.message || err.message;
+      alert(backendMessage);
+    }
+  };
 
   const handleEditProduct = (product) => {
     setEditingProduct(product);
@@ -231,7 +227,8 @@ const ShopkeeperDashboard = () => {
                   <th>Customer</th>
                   <th>Products</th>
                   <th>Total Amount</th>
-                  <th>Status</th>
+                  <th>Order Status</th>
+                  <th>Payment Status</th>
                   <th>Change Status</th>
                 </tr>
               </thead>
@@ -249,17 +246,17 @@ const ShopkeeperDashboard = () => {
                     </td>
                     <td>{order.totalAmount}</td>
                     <td>{order.orderStatus}</td>
+                    <td>{order.paymentStatus}</td>
                     <td>
                       <select
-                        value={order.orderStatus || 'PENDING'}
+                        value={order.orderStatus || ORDER_STATUSES.PENDING}
                         onChange={e => handleStatusChange(order.id, e.target.value)}
                       >
-                          <option value="PENDING">PENDING</option>
-                          <option value="PROCESSING">PROCESSING</option>
-                          <option value="SHIPPED">SHIPPED</option>
-                          <option value="DELIVERED">DELIVERED</option>
-                          <option value="CANCELLED">CANCELLED</option>
-
+                        {Object.values(ORDER_STATUSES).map(status => (
+                          <option key={status} value={status}>
+                            {status}
+                          </option>
+                        ))}
                       </select>
                     </td>
                   </tr>

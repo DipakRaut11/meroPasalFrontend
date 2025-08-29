@@ -23,7 +23,7 @@ export const uploadImages = async (productId, file, token) => {
 };
 
 export const deleteImage = async (imageId, token) => {
-  const response = await fetch(`${IMAGE_API}/image/${imageId}/delete`, {
+  const response = await fetch(`${IMAGE_API}/${imageId}/delete`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`
