@@ -326,3 +326,59 @@
   color: #666;
   font-size: 1.2rem;
 }
+
+.search-btn {
+  padding: 0.6rem 1.5rem;
+  background-color: #4b75b1; /* yellow */
+  color: #1f2937; /* dark text for contrast */
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(53, 31, 31, 0.15);
+}
+
+.search-btn:hover {
+  background-color: #92abea; /* darker yellow on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.search-btn:disabled {
+  background-color: #f3f4f6; /* light gray when disabled */
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Simple, modern Add to Cart button */
+.btn-add-cart {
+  background-color: #28a745; /* green */
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-add-cart:hover {
+  background-color: #218838; /* darker green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-add-cart:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-cart:disabled {
+  background-color: #94d3a2;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+

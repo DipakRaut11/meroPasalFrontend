@@ -1,9 +1,10 @@
 // src/pages/ShopkeeperDashboard/ShopkeeperDashboard.jsx
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import useProducts from '../../hooks/useProducts';
 import { addProduct, updateProduct, deleteProduct } from '../../api/productService';
 import { uploadImages, deleteImage } from '../../api/imageService';
-import { getShopOrders, updateOrderStatus } from '../../api/orderService';
+import { getShopOrders } from '../../api/orderService'; // ✅ updateOrderStatus removed
 import ProductTable from '../../components/products/ProductTable';
 import ProductForm from '../../components/products/ProductForm';
 import { ErrorMessage } from '../../components/common/ErrorMessage';
@@ -11,7 +12,7 @@ import { SearchBar } from '../../components/common/SearchBar';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import './ShopkeeperDashboard.css';
 
-// Define order statuses as constants to avoid hardcoding
+// Order status constants (still used for display only)
 const ORDER_STATUSES = {
   PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
@@ -24,7 +25,6 @@ const ShopkeeperDashboard = () => {
   const token = sessionStorage.getItem('token');
   const shopkeeperId = sessionStorage.getItem('shopkeeperId');
 
-  // Tabs: 'products' or 'orders'
   const [activeTab, setActiveTab] = useState('products');
 
   /** PRODUCT STATE **/
@@ -48,7 +48,6 @@ const ShopkeeperDashboard = () => {
     try {
       setOrdersLoading(true);
       setOrdersError('');
-
       const res = await getShopOrders(token);
       setOrders(Array.isArray(res) ? res : []);
     } catch (err) {
@@ -60,24 +59,12 @@ const ShopkeeperDashboard = () => {
     }
   };
 
-  const handleStatusChange = async (orderId, status) => {
-    try {
-      await updateOrderStatus(orderId, status, token);
-      setOrders(prev => prev.map(o => (o.id === orderId ? { ...o, orderStatus: status } : o)));
-    } catch (err) {
-      console.error(err);
-      alert('Failed to update status');
-    }
-  };
-
   /** PRODUCT HANDLERS **/
   const handleAddProduct = async (productData, images) => {
     try {
-  
       if (!productData.name || !productData.brand || !productData.price || !productData.inventory || !productData.category) {
         throw new Error('Please fill in all required fields');
       }
-
       const payload = {
         name: productData.name,
         brand: productData.brand,
@@ -87,7 +74,6 @@ const ShopkeeperDashboard = () => {
         category: { name: productData.category },
         shopkeeper: { id: parseInt(shopkeeperId, 10) }
       };
-
       const newProduct = await addProduct(payload);
       if (newProduct?.data?.id && images.length > 0) {
         await uploadImages(newProduct.data.id, images, token);
@@ -160,112 +146,118 @@ const ShopkeeperDashboard = () => {
   if (ordersLoading && activeTab === 'orders') return <LoadingSpinner />;
 
   return (
-    <div className="shopkeeper-dashboard">
-      <h2>Shopkeeper Dashboard</h2>
-
-      {/* Tab Switcher */}
-      <div className="tab-buttons">
-        <button onClick={() => setActiveTab('products')} className={activeTab === 'products' ? 'active' : ''}>
-          Products
-        </button>
-        <button onClick={() => setActiveTab('orders')} className={activeTab === 'orders' ? 'active' : ''}>
-          Orders
-        </button>
+    <div className="relative min-h-screen bg-gray-100">
+      {/* ✅ Profile button (TOP-LEFT CORNER) */}
+      <div className="absolute top-4 left-4">
+        <Link to="/profile">
+          <img
+            src="/default-profile.png"
+            alt="Profile"
+            className="w-10 h-10 rounded-full cursor-pointer border"
+          />
+        </Link>
       </div>
 
-      {activeTab === 'products' && (
-        <>
-          <ErrorMessage message={productsError} />
-          <SearchBar filters={searchFilters} onFilterChange={setSearchFilters} />
-          <button
-            className="add-product-btn"
-            onClick={() => {
-              setEditingProduct(null);
-              setShowForm(!showForm);
-            }}
-          >
-            {showForm ? 'Cancel' : 'Add New Product'}
-          </button>
-          {showForm && (
-            <ProductForm
-              initialData={editingProduct || {}}
-              onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct}
-              onCancel={() => {
-                setShowForm(false);
-                setEditingProduct(null);
-              }}
-              isEditing={!!editingProduct}
-            />
-          )}
-          <ProductTable
-            products={filteredProducts}
-            onEdit={handleEditProduct}
-            onDelete={handleDeleteProduct}
-            onImageDelete={(productId, imageId) => {
-              deleteImage(imageId, token).then(() => {
-                setProducts(prev =>
-                  prev.map(p =>
-                    p.id === productId ? { ...p, images: p.images.filter(img => img.id !== imageId) } : p
-                  )
-                );
-              });
-            }}
-          />
-        </>
-      )}
+      <div className="shopkeeper-dashboard">
+        <h2>Shopkeeper Dashboard</h2>
 
-      {activeTab === 'orders' && (
-        <>
-          {ordersError && <p>{ordersError}</p>}
-          {(orders || []).length === 0 ? (
-            <p>No orders found for your shop.</p>
-          ) : (
-            <table className="orders-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Products</th>
-                  <th>Total Amount</th>
-                  <th>Order Status</th>
-                  <th>Payment Status</th>
-                  <th>Change Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(orders || []).map(order => (
-                  <tr key={order.id}>
-                    <td>{order.id}</td>
-                    <td>{order.userName || order.userId}</td>
-                    <td>
-                      {(order.items || []).map(item => (
-                        <div key={item.productId}>
-                          {item.productName} x {item.quantity}
-                        </div>
-                      ))}
-                    </td>
-                    <td>{order.totalAmount}</td>
-                    <td>{order.orderStatus}</td>
-                    <td>{order.paymentStatus}</td>
-                    <td>
-                      <select
-                        value={order.orderStatus || ORDER_STATUSES.PENDING}
-                        onChange={e => handleStatusChange(order.id, e.target.value)}
-                      >
-                        {Object.values(ORDER_STATUSES).map(status => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
+        {/* Tab Switcher */}
+        <div className="tab-buttons">
+          <button
+            onClick={() => setActiveTab('products')}
+            className={activeTab === 'products' ? 'active' : ''}
+          >
+            Products
+          </button>
+          <button
+            onClick={() => setActiveTab('orders')}
+            className={activeTab === 'orders' ? 'active' : ''}
+          >
+            Orders
+          </button>
+        </div>
+
+        {activeTab === 'products' && (
+          <>
+            <ErrorMessage message={productsError} />
+            <SearchBar filters={searchFilters} onFilterChange={setSearchFilters} />
+            <button
+              className="add-product-btn"
+              onClick={() => {
+                setEditingProduct(null);
+                setShowForm(!showForm);
+              }}
+            >
+              {showForm ? 'Cancel' : 'Add New Product'}
+            </button>
+            {showForm && (
+              <ProductForm
+                initialData={editingProduct || {}}
+                onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct}
+                onCancel={() => {
+                  setShowForm(false);
+                  setEditingProduct(null);
+                }}
+                isEditing={!!editingProduct}
+              />
+            )}
+            <ProductTable
+              products={filteredProducts}
+              onEdit={handleEditProduct}
+              onDelete={handleDeleteProduct}
+              onImageDelete={(productId, imageId) => {
+                deleteImage(imageId, token).then(() => {
+                  setProducts(prev =>
+                    prev.map(p =>
+                      p.id === productId ? { ...p, images: p.images.filter(img => img.id !== imageId) } : p
+                    )
+                  );
+                });
+              }}
+            />
+          </>
+        )}
+
+        {activeTab === 'orders' && (
+          <>
+            {ordersError && <p>{ordersError}</p>}
+            {(orders || []).length === 0 ? (
+              <p>No orders found for your shop.</p>
+            ) : (
+              <table className="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Products</th>
+                    <th>Total Amount</th>
+                    <th>Order Status</th>
+                    <th>Payment Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </>
-      )}
+                </thead>
+                <tbody>
+                  {(orders || []).map(order => (
+                    <tr key={order.id}>
+                      <td>{order.id}</td>
+                      <td>{order.userName || order.userId}</td>
+                      <td>
+                        {(order.items || []).map(item => (
+                          <div key={item.productId}>
+                            {item.productName} x {item.quantity}
+                          </div>
+                        ))}
+                      </td>
+                      <td>{order.totalAmount}</td>
+                      <td>{order.orderStatus}</td>
+                      <td>{order.paymentStatus}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

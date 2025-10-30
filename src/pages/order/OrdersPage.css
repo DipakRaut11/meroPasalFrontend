@@ -1,65 +1,94 @@
-/* OrdersPage.css */
-
-/* Container for the page */
-.orders-page {
+.orders-container {
+  max-width: 1000px;
+  margin: 30px auto;
   padding: 20px;
-  font-family: 'Arial', sans-serif;
-  background-color: #f9f9f9;
+  background: #f9fbfd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading */
-.orders-page h2 {
-  font-size: 28px;
-  font-weight: bold;
+.orders-container h2 {
+  text-align: center;
+  color: #1e3a8a;
   margin-bottom: 20px;
-  color: #333;
 }
 
-/* Each order card */
-.orders-page ul li {
-  background-color: #fff;
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px 15px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.back-button {
+  background-color: #4b5563;      /* dark gray */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #374151;      /* slightly darker on hover */
+}
+
+
+.orders-table th {
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #f1f5f9;
+}
+
+.orders-table tr:nth-child(odd) {
+  background-color: #e0f2fe;
+}
+
+.orders-table tr:hover {
+  background: #bfdbfe;
+  transition: background 0.2s ease-in-out;
+}
+
+/* Sub-table for items */
+.sub-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+
+.sub-table th,
+.sub-table td {
+  padding: 6px 8px;
+  font-size: 14px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* Order details */
-.orders-page li p {
-  margin: 5px 0;
-  font-size: 16px;
-  color: #555;
+.sub-table th {
+  background: #93c5fd; /* lighter blue */
+  color: #1e3a8a;
+  font-weight: 600;
+  text-align: left;
 }
 
-/* Nested list for items */
-.orders-page li ul {
-  padding-left: 20px;
-  margin-top: 10px;
+.sub-table tr:nth-child(even) {
+  background: #f3f4f6;
 }
 
-/* Each item in order */
-.orders-page li ul li {
-  font-size: 15px;
-  margin: 3px 0;
-  color: #444;
-}
-
-/* Optional: highlight product name */
-.orders-page li ul li strong {
-  color: #222;
-}
-
-/* Error message */
-.orders-page div[style*="color: red"] {
-  color: #c0392b;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-/* Loading or empty message */
-.orders-page div {
-  font-size: 16px;
-  color: #666;
-  margin-top: 20px;
+.sub-table tr:nth-child(odd) {
+  background: #ffffff;
 }

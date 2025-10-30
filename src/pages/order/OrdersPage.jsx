@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './OrdersPage.css';
 
-
 const API_PREFIX = '/api/v1'; // proxy enabled
 
 const OrdersPage = () => {
@@ -53,32 +52,52 @@ const OrdersPage = () => {
   if (orders.length === 0) return <div>No orders found.</div>;
 
   return (
-    <div>
+    <div className="orders-container">
+      {/* ✅ Back Button */}
+      <button className="back-button" onClick={() => navigate(-1)}>
+        ← Back
+      </button>
+
       <h2>Your Orders</h2>
-      <ul>
-        {orders.map((order, idx) => (
-          <li
-            key={order.id || idx} // fallback to index if id is missing
-            style={{
-              border: '1px solid #ccc',
-              margin: '10px 0',
-              padding: '10px',
-            }}
-          >
-            <p><strong>Order ID:</strong> {order.id || 'N/A'}</p>
-            <p><strong>Status:</strong> {order.orderStatus  || 'N/A'}</p>
-            <p><strong>Total Price:</strong> ₹{order.totalAmount?.toFixed(2) || '0.00'}</p>
-            <p><strong>Items:</strong></p>
-            <ul>
-              {order.items?.map((item, itemIdx) => (
-                <li key={item.id || itemIdx}>
-                  {item.productName} — Qty: {item.quantity} — Price: ₹{item.price?.toFixed(2)}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
+      <table className="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Total Price</th>
+            <th>Items</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map((order, idx) => (
+            <tr key={order.id || idx}>
+              <td>{order.id || 'N/A'}</td>
+              <td>{order.orderStatus || 'N/A'}</td>
+              <td>Rs.{order.totalAmount?.toFixed(2) || '0.00'}</td>
+              <td>
+                <table className="sub-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Price (Rs.)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {order.items?.map((item, itemIdx) => (
+                      <tr key={item.id || itemIdx}>
+                        <td>{item.productName}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.price?.toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

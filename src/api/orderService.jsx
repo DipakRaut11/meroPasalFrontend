@@ -36,7 +36,7 @@ export const updateOrderStatus = async (orderId, status, token) => {
 // Simple placeOrder (cart items only, no delivery/payment details)
 export const placeOrder = async (userId, cart, clearCart, setOrderMessage, setLoading) => {
   if (!cart || !cart.items || cart.items.length === 0) {
-    setOrderMessage("Your cart is empty. Add items before placing an order.");
+    setOrderMessage("My cart is empty. Add items before placing an order.");
     return;
   }
 
@@ -78,7 +78,7 @@ export const placeOrder = async (userId, cart, clearCart, setOrderMessage, setLo
 // Full placeOrderWithDetails (delivery + payment screenshot)
 export const placeOrderWithDetails = async (userId, cart, form, setOrderMessage, clearCart, setLoading) => {
   if (!cart || !cart.items || cart.items.length === 0) {
-    setOrderMessage("Your cart is empty. Add items before placing an order.");
+    setOrderMessage("My cart is empty. Add items before placing an order.");
     return;
   }
 

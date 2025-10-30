@@ -11,7 +11,9 @@ import OrdersPage from './pages/order/OrdersPage';  // <-- import OrdersPage her
 import { CartProvider } from './contexts/CartContext';
 import AdminPage from './pages/admin/AdminPage';
 import PlaceOrderPage from './pages/order/PlaceOrderPage';
+import EsewaSuccessPage from './pages/order/EsewaSuccessPage';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
+import ProfilePage from "./pages/profie/ProfilePage";
 
 
 
@@ -29,9 +31,12 @@ function App() {
           <Route path="/customer-dashboard" element={<CustomerDashboard />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/place-order" element={<PlaceOrderPage />} />
+          <Route path="/esewa-success" element={<EsewaSuccessPage />} />
           <Route path="/orders" element={<OrdersPage />} /> {/* orders route */}
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/product/:id" element={<ProductDetail />} /> {/* product detail route */}
+          
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </Router>
     </CartProvider>

@@ -1,6 +1,3 @@
-/* src/pages/home/Home.css */
-
-/* Main container */
 .home-page {
   max-width: 1600px;
   margin: 0 auto;
@@ -9,253 +6,239 @@
   background-color: #f9f9f9;
 }
 
-/* Header / Navigation */
-.home-page header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.home-page header h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-}
-
-.home-page header .btn {
+/* Buttons */
+.btn-login, .btn-signup {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: 600;
   color: #fff;
-  text-decoration: none;
+  border: none;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.home-page header .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.home-page header .btn-login {
+.btn-login {
   background-color: #3498db;
 }
 
-.home-page header .btn-signup {
+.btn-login:hover {
+  background-color: #2980b9;
+}
+
+.btn-signup {
   background-color: #2ecc71;
 }
 
-/* Section title */
-.home-page h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #2c3e50;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 0.5rem;
+.btn-signup:hover {
+  background-color: #27ae60;
 }
 
-/* Error message */
-.home-page .error-message {
-  color: #e74c3c;
-  background-color: #fde8e8;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+/* Form container */
+.form-container {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
 /* Filters */
-.home-page .filters {
+.filters {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
+  flex-wrap: wrap;
   margin-bottom: 2rem;
 }
 
-.home-page .filters input,
-.home-page .filters select {
+.filters input,
+.filters select {
   padding: 0.6rem 1rem;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
-  min-width: 180px;
   flex: 1;
 }
 
-.home-page .filters input {
-  flex-grow: 2;
-}
-
 /* Product Grid */
-.home-page .product-grid {
+.product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
 
 /* Product Card */
-.home-page .product-card {
+.product-card {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.home-page .product-card:hover {
+.product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-/* Product Image */
-.home-page .product-card img {
+.product-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.home-page .product-card img:hover {
+.product-image:hover {
   transform: scale(1.05);
 }
 
-.home-page .product-card .no-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.no-image {
   height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #f0f0f0;
   color: #999;
   font-style: italic;
 }
 
-/* Product Info */
-.home-page .product-card h3 {
+h3 {
   font-size: 1.1rem;
-  margin: 0.5rem 0;
-  color: #333;
-  padding: 0 1rem;
+  margin: 0.5rem;
 }
 
-.home-page .product-card p {
-  padding: 0 1rem;
-  margin: 0.3rem 0;
-}
-
-.home-page .product-card .brand {
+.brand {
   color: #666;
-  font-size: 0.9rem;
+  margin: 0.3rem 0.5rem;
 }
 
-.home-page .product-card .price {
+.price {
   color: #e53935;
-  font-size: 1.2rem;
   font-weight: 600;
+  margin: 0.3rem 0.5rem 0.5rem;
 }
 
-/* Product Button */
-.home-page .product-card .btn-buy {
-  margin: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  background-color: #3498db;
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.home-page .product-card .btn-buy:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* No products message */
-.home-page .no-products-message {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
-  color: #666;
-}
-
-/* Responsive adjustments */
-@media (max-width: 900px) {
-  .home-page .filters {
-    flex-direction: column;
-  }
-  
-  .home-page .filters input,
-  .home-page .filters select {
-    width: 100%;
-  }
-  
-  .home-page .product-card img {
-    height: 180px;
+/* Responsive: 2 per row on tablet */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* Responsive: 1 per row on mobile */
 @media (max-width: 600px) {
-  .home-page .product-card img {
-    height: 150px;
+  .product-grid {
+    grid-template-columns: 1fr;
   }
 }
-
-/* Header buttons */
-.home-page header a.btn-login {
-  background-color: #3498db; /* Blue */
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.home-page header a.btn-login:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.home-page header a.btn-signup {
-  background-color: #2ecc71; /* Green */
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.home-page header a.btn-signup:hover {
-  background-color: #27ae60;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Product Buy Button */
-.home-page .product-card .btn-buy {
-  margin: 1rem 0 0 0;
-  padding: 0.6rem 1.2rem;
+.floating-form {
+  position: absolute; /* inside the home-page container */
+  top: 0; /* start at top of container */
+  right: 0; /* align to right */
+  width: 350px;
+  max-height: 90vh; /* max height so it doesn’t overflow screen */
+  overflow-y: auto; /* scroll if form is taller */
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  display: inline-block;
+  padding: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
 }
 
-.home-page .product-card .btn-buy:hover {
-  background: linear-gradient(135deg, #2980b9, #1f6391);
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+/* Slide-down animation */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Product Details Modal */
+.product-details-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: start; /* slide down from top */
+  z-index: 2000;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  max-width: 800px;
+  width: 100%;
+  animation: slideDownModal 0.3s ease;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Slide-down animation for modal content */
+@keyframes slideDownModal {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade-in for background overlay */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Close button */
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.close-modal:hover {
+  color: #e53935;
+}
+
+/* Product Images Gallery inside modal */
+.product-images-gallery {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.product-images-gallery img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.product-images-gallery img:hover {
+  transform: scale(1.1);
+}
+
+/* Product specs in modal */
+.product-specs {
+  margin-top: 1rem;
+}
+
+.product-specs ul {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+}
+
+.product-specs li {
+  margin-bottom: 0.3rem;
 }
 

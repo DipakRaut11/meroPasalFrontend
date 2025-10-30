@@ -6,6 +6,7 @@ import "./Login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -20,8 +21,6 @@ const Login = () => {
       sessionStorage.setItem("token", token);
 
       const user = response.data;
-
-      // Check for redirect path stored in localStorage
       const redirectPath = localStorage.getItem("redirectAfterLogin");
 
       if (user.roles.includes("ROLE_SHOPKEEPER")) {
@@ -31,7 +30,7 @@ const Login = () => {
         navigate("/shopkeeper-dashboard");
       } else if (user.roles.includes("ROLE_CUSTOMER")) {
         if (redirectPath) {
-          localStorage.removeItem("redirectAfterLogin"); // clear after use
+          localStorage.removeItem("redirectAfterLogin");
           navigate(redirectPath);
         } else {
           navigate("/customer-dashboard");
@@ -41,13 +40,26 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login failed", error);
-      alert("Login failed. Please check your email and password.");
+      setErrorMessage("Invalid email or password!");
+
+      // Clear the error message after 3 seconds
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
     }
   };
 
   return (
     <div className="login-container">
       <h2>Login</h2>
+
+      {/* Popup message */}
+      {errorMessage && (
+        <div className="popup-message">
+          {errorMessage}
+        </div>
+      )}
+
       <form onSubmit={handleLogin}>
         <input
           type="email"
@@ -65,6 +77,7 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
+
       <div className="signup-link">
         <button onClick={() => navigate("/signup")}>
           Don't have an account? Sign Up

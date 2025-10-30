@@ -23,7 +23,7 @@ const ProductTable = ({ products, onEdit, onDelete, onImageDelete }) => {
             <tr key={product.id}>
               <td>{product.name}</td>
               <td>{product.brand}</td>
-              <td>${product.price}</td>
+              <td>Rs.{product.price}</td>
               <td>{product.inventory}</td>
               
               {/* IMAGES COLUMN */}

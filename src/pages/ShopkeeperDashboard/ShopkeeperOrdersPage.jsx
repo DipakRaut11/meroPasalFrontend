@@ -60,7 +60,7 @@ const ShopkeeperOrdersPage = () => {
               <th>Products</th>
               <th>Total Amount</th>
               <th>Status</th>
-              <th>Change Status</th>
+         
             </tr>
           </thead>
           <tbody>
@@ -77,17 +77,7 @@ const ShopkeeperOrdersPage = () => {
                 </td>
                 <td>{order.totalAmount}</td>
                 <td>{order.orderStatus}</td>
-                <td>
-                  <select
-                    value={order.orderStatus || 'PENDING'}
-                    onChange={e => handleStatusChange(order.id, e.target.value)}
-                  >
-                    <option value="PENDING">PENDING</option>
-                    <option value="PROCESSING">PROCESSING</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                    <option value="CANCELLED">CANCELLED</option>
-                  </select>
-                </td>
+              
               </tr>
             ))}
           </tbody>

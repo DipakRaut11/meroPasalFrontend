@@ -25,7 +25,7 @@ const ProductDetail = () => {
     <div>
       <h1>{product.name}</h1>
       <p>{product.brand}</p>
-      <p>${product.price}</p>
+      <p>Rs.{product.price}</p>
       {/* show images, etc */}
     </div>
   );
