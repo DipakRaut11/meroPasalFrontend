@@ -154,7 +154,7 @@ const AdminPage = () => {
           <table>
             <thead>
               <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Order ID</th>
                 <th>User ID</th>
                 <th>Date</th>

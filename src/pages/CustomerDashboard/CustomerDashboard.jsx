@@ -187,14 +187,7 @@ const saveSearch = async () => {
           className="block rounded-full ring-1 ring-gray-300 hover:ring-blue-400
                     transition duration-200 ease-in-out"
         >
-          <img
-            src="/default-profile.png"
-            alt="Profile"
-            className="w-10 h-10 rounded-full cursor-pointer
-                      hover:scale-105 active:scale-95
-                      transition-transform duration-200 ease-in-out
-                      shadow-md hover:shadow-lg"
-          />
+          <h2>Profile</h2>
         </Link>
       </div>
     </div>

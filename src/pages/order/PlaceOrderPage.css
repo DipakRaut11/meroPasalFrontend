@@ -1,135 +1,130 @@
+/* Page Container */
 .place-order-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  padding: 2rem;
-  justify-content: center;
-}
-
-.qr-panel {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fafc, #eef2ff);
 }
 
-.qr-panel h3 {
-  font-size: 1.25rem;
+/* Heading */
+.place-order-container h3 {
+  font-size: 1.75rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.qr-image {
-  width: 250px;
-  height: 250px;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  object-fit: contain;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-/* Enlarged image modal style */
-.qr-image.large {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  height: 400px;
-  max-width: 90%;
-  max-height: 90%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  border-radius: 1rem;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-/* Overlay behind enlarged image */
-.qr-image.large::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0,0,0,0.5);
-  z-index: -1;
-}
-
-.form-panel {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.form-panel h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
-.form-panel input[type="text"] {
+/* Form Section */
+.form-panel {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Form Inputs */
+.form-panel input[type="text"],
+.form-panel input[type="number"],
+.form-panel input[type="tel"] {
+  width: 100%;
+  padding: 0.85rem 1rem;
   border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   font-size: 1rem;
+  color: #0f172a;
+  background-color: #f9fafb;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-panel input[type="text"]:focus {
+.form-panel input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  background-color: #fff;
 }
 
-.form-panel button {
-  background-color: #16a34a;
-  color: white;
-  padding: 0.75rem;
+/* Buttons Container */
+.place-order-container .flex {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Primary Button (eSewa Payment) */
+.place-order-container button {
+  padding: 0.85rem 1.5rem;
   font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out;
+  border: none;
 }
 
-.form-panel button:hover {
+/* Esewa Pay Button */
+.place-order-container button.bg-green-600 {
+  background-color: #16a34a;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+.place-order-container button.bg-green-600:hover {
   background-color: #15803d;
   transform: translateY(-2px);
 }
 
+/* Back to Cart Button */
+.place-order-container button.bg-gray-400 {
+  background-color: #94a3b8;
+  color: #fff;
+}
+
+.place-order-container button.bg-gray-400:hover {
+  background-color: #64748b;
+  transform: translateY(-2px);
+}
+
+/* Error and Loading Messages */
 .error-message {
   color: #dc2626;
   text-align: center;
-  margin: 1rem 0;
+  margin-top: 1rem;
+  font-weight: 500;
 }
 
 .loading-message {
   text-align: center;
-  margin: 2rem 0;
-  font-size: 1.2rem;
-  color: #374151;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #334155;
 }
 
-@media (max-width: 768px) {
+/* Responsive Design */
+@media (max-width: 640px) {
   .place-order-container {
-    flex-direction: column;
-    align-items: center;
+    padding: 2rem 1rem;
   }
 
-  .qr-panel, .form-panel {
-    max-width: 100%;
+  .form-panel {
+    padding: 1.5rem;
+  }
+
+  .place-order-container .flex {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .place-order-container button {
+    width: 100%;
   }
 }

@@ -97,7 +97,7 @@ const CartPage = () => {
         </button>
         {/* ✅ New Back button to previous page */}
         <button className="back-btn" onClick={() => navigate(-1)}>
-          ⬅ Back
+          Back
         </button>
       </div>
     );
@@ -113,7 +113,7 @@ const CartPage = () => {
         onClick={() => navigate(-1)}
         style={{ marginBottom: '1rem' }}
       >
-        ⬅ Back
+        Back
       </button>
 
       <table className="cart-table">

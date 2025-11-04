@@ -146,6 +146,7 @@ import React, { useState } from 'react';
 import { useCart } from '../../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // ✅ Use axios for JSON body request
+import './PlaceOrderPage.css';
 
 const PlaceOrderPage = () => {
   const { cart, setCart } = useCart();
@@ -174,7 +175,7 @@ const PlaceOrderPage = () => {
   };
 
   const handlePayWithEsewa = async () => {
-    if (!form.dropLocation || !form.contactNumber || !form.landmark) {
+    if (form.dropLocation || form.contactNumber || form.landmark) {
       alert('All fields are required.');
       return;
     }
@@ -272,7 +273,7 @@ const PlaceOrderPage = () => {
 
   return (
     <div className="place-order-container">
-      <h3>Delivery Details</h3>
+      {/* <h3>Delivery Details</h3>
 
       <input
         type="text"
@@ -294,7 +295,7 @@ const PlaceOrderPage = () => {
         placeholder="Famous Landmark"
         value={form.landmark}
         onChange={handleChange}
-      />
+      /> */}
 
       <div className="flex gap-2 mt-4">
         <button

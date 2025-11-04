@@ -100,7 +100,7 @@ const ProfilePage = () => {
           onClick={() => navigate(-1)}
           className="btn btn-secondary back-button"
         >
-          ⬅ Cancel / Back
+          Back
         </button>
 
         <h2 className="profile-header">My Profile</h2>

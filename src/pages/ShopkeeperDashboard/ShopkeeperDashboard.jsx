@@ -150,11 +150,7 @@ const ShopkeeperDashboard = () => {
       {/* ✅ Profile button (TOP-LEFT CORNER) */}
       <div className="absolute top-4 left-4">
         <Link to="/profile">
-          <img
-            src="/default-profile.png"
-            alt="Profile"
-            className="w-10 h-10 rounded-full cursor-pointer border"
-          />
+          <h2>Profile</h2>
         </Link>
       </div>
 
